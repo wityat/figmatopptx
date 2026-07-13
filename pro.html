@@ -13,6 +13,28 @@
   <meta property="og:description" content="Unlimited Figma → editable PowerPoint exports. $12/month or $69/year. Free plan stays — 3 exports every month, no signup.">
   <meta property="og:image" content="https://figmatopptx.com/assets/cover.png">
   <link rel="canonical" href="https://figmatopptx.com/pro.html">
+
+  <!-- Paddle Billing overlay checkout. Client-side token is public by design
+       (embedded in page source). Checkout works after Paddle verification +
+       domain approval; until then buttons fall back to the email order. -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  <script>
+    var PADDLE_TOKEN = 'PADDLE_CLIENT_TOKEN_PLACEHOLDER';
+    var PRICES = { monthly: 'pri_01kxesst98ht76dsatz6hx81pt', yearly: 'pri_01kxestwwzmneef6r0zfjwwhb0' };
+    var paddleReady = false;
+    if (PADDLE_TOKEN.indexOf('live_') === 0) {
+      try { Paddle.Initialize({ token: PADDLE_TOKEN }); paddleReady = true; } catch (e) {}
+    }
+    function buyPro(plan) {
+      if (paddleReady) {
+        Paddle.Checkout.open({ items: [{ priceId: PRICES[plan], quantity: 1 }] });
+      } else {
+        var el = document.getElementById('order-fallback');
+        if (el) el.style.display = 'block';
+      }
+      return false;
+    }
+  </script>
 </head>
 <body>
 
@@ -96,7 +118,12 @@
       <h2>Get Pro</h2>
       <p class="section-intro">$12/month or $69/year. You'll receive a license key and activate it right inside the plugin — no account needed.</p>
       <div class="cta-group">
-        <a class="btn btn-primary" href="#" data-paddle-placeholder>Get Pro</a>
+        <div class="buy-buttons">
+          <a class="btn btn-primary" href="#" onclick="return buyPro('monthly')">Get Pro — $12/month</a>
+          <a class="btn btn-primary" href="#" onclick="return buyPro('yearly')">Get Pro — $69/year</a>
+        </div>
+        <p id="order-fallback" style="display:none">Checkout is opening soon — to order today, email
+          <strong>ttrttr449@gmail.com</strong> and you'll get your license key by reply.</p>
         <span class="cta-note">Checkout opening soon — email us to order today: <strong>ttrttr449@gmail.com</strong></span>
       </div>
       <p class="dim" style="margin-top: 1.6em; font-size: 0.9rem;">Purchases will be processed by Paddle.com as our Merchant of Record.</p>
