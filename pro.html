@@ -25,6 +25,13 @@
     if (PADDLE_TOKEN.indexOf('live_') === 0) {
       try { Paddle.Initialize({ token: PADDLE_TOKEN }); paddleReady = true; } catch (e) {}
     }
+    // When Paddle is actually up, the page must stop telling people that
+    // checkout is not ready yet — that line costs sales the moment it is wrong.
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!paddleReady) return;
+      var note = document.getElementById('checkout-note');
+      if (note) note.innerHTML = 'Secure checkout by Paddle · 14-day money-back guarantee';
+    });
     function buyPro(plan) {
       if (paddleReady) {
         Paddle.Checkout.open({ items: [{ priceId: PRICES[plan], quantity: 1 }] });
@@ -126,7 +133,7 @@
         </div>
         <p id="order-fallback" style="display:none">Checkout is opening soon — to order today, email
           <strong>ttrttr449@gmail.com</strong> and you'll get your license key by reply.</p>
-        <span class="cta-note">Checkout opening soon — email us to order today: <strong>ttrttr449@gmail.com</strong></span>
+        <span class="cta-note" id="checkout-note">Checkout opening soon — email us to order today: <strong>ttrttr449@gmail.com</strong></span>
       </div>
       <p class="dim" style="margin-top: 1.6em; font-size: 0.9rem;">Purchases will be processed by Paddle.com as our Merchant of Record.</p>
     </div>
