@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Conversion Report — What It Tells You After Every Export</title>
+  <meta name="description" content="Every export ends with a report: how many native text boxes and shapes were written, which nodes became pictures and why, and what happened to every font.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="theme-color" content="#16161e">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The Conversion Report — What It Tells You After Every Export">
+  <meta property="og:description" content="Every export ends with a report: how many native text boxes and shapes were written, which nodes became pictures and why, and what happened to every font.">
+  <meta property="og:image" content="https://figmatopptx.com/assets/cover.png">
+  <meta property="og:url" content="https://figmatopptx.com/conversion-report/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://figmatopptx.com/conversion-report/">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "PPTX Export — Figma to Editable PowerPoint",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Figma (Windows, macOS, web)",
+      "url": "https://www.figma.com/community/plugin/1658228847345139243",
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "name": "Free — 3 exports per month"
+        },
+        {
+          "@type": "Offer",
+          "price": "12",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (monthly)"
+        },
+        {
+          "@type": "Offer",
+          "price": "69",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (yearly)"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why show me problems at all? Other plugins just export.",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because you find out either way — the only question is whether you find out here, or your client finds out in front of their board. A three-line report before you send the file is cheaper than a surprise after."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a rasterized node mean the export failed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. A rasterized node still looks exactly like your design; it is rendered at high resolution and placed in the right position. It simply cannot be edited in PowerPoint. For a logo or an illustration that is usually the correct outcome anyway."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a placeholder PNG?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A rare case where a node had to be rasterized but no rendered bytes were available for it. The report marks that line explicitly rather than shipping an invisible gap — if you see one, re-run the export."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I get the report as a file?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The report is shown in the plugin right after the export and can be copied as plain text — the same format shown on this page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do failed exports count against my free quota?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Quota is only spent on an export that actually produced a file."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/favicon.png" alt="" width="28" height="28">PPTX Export</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/export-figma-to-powerpoint/">How to export</a>
+      <a href="/conversion-report/" aria-current="page">Conversion report</a>
+      <a href="/tools/slide-size-calculator/">Tools</a>
+      <a href="/pro.html">Pricing</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>What the Conversion Report Tells You</h1>
+      <p class="lede">Of the Figma-to-PowerPoint plugins we tested, this is the only one that hands you a report at all. Here is the whole thing, line by line.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </div>
+
+
+  <section>
+    <div class="wrap">
+      <span class="kicker">A real report</span>
+      <h2>This is the actual output format</h2>
+      <p class="dim" style="max-width:760px">Not a marketing mock-up — this is what the plugin prints after a five-slide export, in the same plain-text form you can copy out of the UI.</p>
+      <pre class="report-sample"><code>slides: 5
+native text boxes: 18
+native shapes: 9
+images placed: 5
+rasterized nodes: 3
+  - Hero / gradient-orb: angular gradient fill
+  - Logo lockup: complex vector (curves or filled geometry)
+  - Card 2 / photo-mask: mask node
+font substitutions: 2
+  - Inter -> Inter (no mapping — kept as-is, may fall back if not installed)
+  - Space Grotesk -> Segoe UI (Cyrillic fallback → Segoe UI (no mapping; Space Grotesk may render as boxes if not installed))
+fonts embedded: 1
+  - Inter [regular, bold]
+fonts remapped: 1
+  - Space Grotesk -> Segoe UI (Cyrillic fallback → Segoe UI)
+fonts need file: 0</code></pre>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">Reading it in thirty seconds</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>The counts</h3>
+          <p><strong>native text boxes</strong> and <strong>native shapes</strong> are the numbers that matter — they are how much of your deck stayed editable. <strong>images placed</strong> counts real image fills, not rasterized fallbacks.</p>
+        </div>
+        <div class="card">
+          <h3>rasterized nodes</h3>
+          <p>Each line is <em>layer name: reason</em>. The layer name is the one from your Figma file, so you can jump straight to it. The reason is the specific rule that fired — not "unsupported".</p>
+        </div>
+        <div class="card">
+          <h3>The three font baskets</h3>
+          <p><strong>embedded</strong> — real bytes inside the file. <strong>remapped</strong> — an honest <em>from → to</em> swap. <strong>need file</strong> — upload a .ttf and it joins the embedded list.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="feature">
+        <div class="feature-copy">
+          <span class="kicker">What to actually do with it</span>
+          <h2>Three questions worth asking before you hit send</h2>
+          <p><strong>1. Is anything editable that needs to be?</strong> If a headline your client will rewrite shows up under <em>rasterized</em>, that is a five-second fix in Figma — usually a mask or a gradient fill on the text — and worth doing before the deck leaves your hands.</p>
+          <p><strong>2. Will the fonts survive?</strong> Anything in <em>need file</em> renders with whatever PowerPoint decides on the recipient's machine. Upload the .ttf and it moves to <em>embedded</em>.</p>
+          <p><strong>3. Does the raster count match your expectations?</strong> Logos and illustrations as pictures — fine. Half your body copy as pictures — something is off, and the reasons column tells you what.</p>
+        </div>
+        <figure class="feature-media">
+          <img src="/assets/carousel-1.png" alt="The conversion report as it appears in the plugin, with counts, rasterized nodes and font baskets" width="1920" height="1080">
+          <figcaption>The same report, in the plugin, the moment your deck is ready.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">Why this exists</h2>
+      <p class="section-intro" style="max-width:760px">In July 2026 we exported the same deck through every Figma-to-PowerPoint plugin we could find and opened each file. Two things were consistently true: most "editable" exports were images, and <strong>none of them told the user what had happened.</strong> The silence is the product decision we disagreed with.</p>
+      <div style="max-width:760px;margin:0 auto">
+      <div class="faq">
+        <details>
+          <summary>Why show me problems at all? Other plugins just export.</summary>
+          <p>Because you find out either way — the only question is whether you find out here, or your client finds out in front of their board. A three-line report before you send the file is cheaper than a surprise after.</p>
+        </details>
+        <details>
+          <summary>Does a rasterized node mean the export failed?</summary>
+          <p>No. A rasterized node still looks exactly like your design; it is rendered at high resolution and placed in the right position. It simply cannot be edited in PowerPoint. For a logo or an illustration that is usually the correct outcome anyway.</p>
+        </details>
+        <details>
+          <summary>What is a placeholder PNG?</summary>
+          <p>A rare case where a node had to be rasterized but no rendered bytes were available for it. The report marks that line explicitly rather than shipping an invisible gap — if you see one, re-run the export.</p>
+        </details>
+        <details>
+          <summary>Can I get the report as a file?</summary>
+          <p>The report is shown in the plugin right after the export and can be copied as plain text — the same format shown on this page.</p>
+        </details>
+        <details>
+          <summary>Do failed exports count against my free quota?</summary>
+          <p>No. Quota is only spent on an export that actually produced a file.</p>
+        </details>
+      </div>
+      </div>
+      <p class="center dim" style="margin-top:2em">Related: <a href="/figma-export-editable-pptx/">The full rule set behind the report</a> · <a href="/convert-figma-to-ppt/">Pre-flight check your deck</a> · <a href="/tools/font-compatibility-checker/">Font compatibility checker</a></p>
+    </div>
+  </section>
+
+
+  <section class="alt">
+    <div class="wrap center">
+      <h2>Hand off a deck people can actually edit</h2>
+      <p class="section-intro">Editable where possible, embedded where it matters, transparent always — that's the whole promise.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-cols">
+      <nav aria-label="Product">
+        <h3>Product</h3>
+        <a href="/">Home</a>
+        <a href="/pro.html">Pricing &amp; Pro</a>
+        <a href="https://www.figma.com/community/plugin/1658228847345139243">Install on Figma Community</a>
+      </nav>
+      <nav aria-label="Guides">
+        <h3>Guides</h3>
+        <a href="/figma-to-pptx/">Figma to PPTX</a>
+        <a href="/export-figma-to-powerpoint/">Export Figma to PowerPoint</a>
+        <a href="/convert-figma-to-ppt/">Convert Figma to PPT</a>
+        <a href="/figma-to-google-slides/">Figma to Google Slides</a>
+        <a href="/figma-presentation-export/">Figma presentation export</a>
+        <a href="/figma-slides-to-powerpoint-editable/">Figma Slides to PowerPoint</a>
+        <a href="/figma-export-editable-pptx/">Editable PPTX explained</a>
+        <a href="/pitchdeck-alternative/">Pitchdeck alternative</a>
+      </nav>
+      <nav aria-label="Free tools">
+        <h3>Free tools</h3>
+        <a href="/tools/slide-size-calculator/">Slide size calculator</a>
+        <a href="/tools/font-compatibility-checker/">Font compatibility checker</a>
+        <a href="/conversion-report/">What the report tells you</a>
+      </nav>
+      <nav aria-label="Legal">
+        <h3>Legal</h3>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/refunds.html">Refund Policy</a>
+      </nav>
+    </div>
+    <p class="footer-note">PPTX Export — Figma to Editable PowerPoint. Conversion happens entirely on your machine, inside Figma — your designs are never uploaded to any server.</p>
+  </div>
+</footer>
+
+</body>
+</html>

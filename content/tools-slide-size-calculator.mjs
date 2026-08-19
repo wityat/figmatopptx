@@ -1,0 +1,214 @@
+import { faq } from './_shared.mjs';
+
+const f = faq([
+  ['What size should a Figma frame be for PowerPoint?',
+   'For a widescreen deck, make the frame 16:9 — <strong>1920 × 1080 px</strong> is the comfortable default, and <strong>1280 × 720 px</strong> matches PowerPoint\'s 13.333 × 7.5 inch slide exactly at 96 DPI. Either works; what matters is the ratio, because the exporter fits your frame to the slide canvas.'],
+  ['What is an EMU?',
+   'An English Metric Unit — the integer unit PowerPoint stores every position and size in. There are exactly <strong>914,400 EMU per inch</strong> (and 360,000 per centimetre). The number is chosen so inches, centimetres and points all divide into it without rounding, which is why the format uses it internally.'],
+  ['Does the frame size have to match the slide size exactly?',
+   'No. The exporter maps your frame onto the slide canvas proportionally, so a 3840 × 2160 frame and a 1280 × 720 frame both fill a 16:9 slide. Matching the <em>aspect ratio</em> is what prevents letterboxing; matching the pixel size is not required.'],
+  ['What happens if my frames have different ratios?',
+   'Each slide is built from its own frame, so a mixed-ratio selection produces a deck with inconsistent margins. Keep one ratio per deck.'],
+  ['Why is my exported deck slightly blurry on a big screen?',
+   'Because a rasterized element was rendered at the frame\'s pixel size and is being blown up. Design at 1920 × 1080 rather than 1280 × 720 if the deck will be projected, and keep as much as possible as native objects — those are resolution-independent.'],
+]);
+
+export default {
+  path: '/tools/slide-size-calculator/',
+  title: 'Figma Slide Size Calculator — PowerPoint Dimensions in Pixels',
+  description: 'Convert slide dimensions between pixels, inches, centimetres and EMU for PowerPoint, Google Slides and A4 — and get the Figma frame size that matches.',
+  h1: 'Slide Size Calculator: Figma Frames ↔ PowerPoint Dimensions',
+  lede: 'PowerPoint thinks in inches and EMU. Figma thinks in pixels. This converts between all of them — free, in your browser, nothing sent anywhere.',
+  navKey: '/tools/slide-size-calculator/',
+  schemas: [f.schema],
+  body: `
+  <section>
+    <div class="wrap">
+      <div class="tool">
+        <div class="tool-presets" id="presets" role="group" aria-label="Slide presets"></div>
+
+        <div class="tool-inputs">
+          <label>Width
+            <input type="number" id="w" value="1920" min="1" step="any">
+          </label>
+          <label>Height
+            <input type="number" id="h" value="1080" min="1" step="any">
+          </label>
+          <label>Unit
+            <select id="unit">
+              <option value="px" selected>pixels</option>
+              <option value="in">inches</option>
+              <option value="cm">centimetres</option>
+              <option value="emu">EMU</option>
+            </select>
+          </label>
+          <label>DPI
+            <select id="dpi">
+              <option value="96" selected>96 (standard)</option>
+              <option value="72">72 (points)</option>
+              <option value="144">144 (2×)</option>
+              <option value="192">192 (retina)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="tool-out" id="out" aria-live="polite"></div>
+        <p class="tool-ratio" id="ratio"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">Every preset, at 96 DPI</h2>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Preset</th><th>Inches</th><th>Pixels @96 DPI</th><th>Ratio</th><th>Suggested Figma frame</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>PowerPoint widescreen (default)</td><td>13.333 × 7.5</td><td>1280 × 720</td><td>16:9</td><td class="yes">1920 × 1080</td></tr>
+            <tr><td>PowerPoint standard</td><td>10 × 7.5</td><td>960 × 720</td><td>4:3</td><td class="yes">1440 × 1080</td></tr>
+            <tr><td>Google Slides (default)</td><td>10 × 5.625</td><td>960 × 540</td><td>16:9</td><td class="yes">1920 × 1080</td></tr>
+            <tr><td>A4 landscape</td><td>11.69 × 8.27</td><td>1123 × 794</td><td>√2</td><td class="yes">2245 × 1587</td></tr>
+            <tr><td>Letter landscape</td><td>11 × 8.5</td><td>1056 × 816</td><td>~4:3</td><td class="yes">2112 × 1632</td></tr>
+            <tr><td>Ultrawide / banner</td><td>16 × 6.75</td><td>1536 × 648</td><td>21:9</td><td class="yes">2560 × 1080</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dim center" style="margin-top:1.2em">Designing at 2× the slide size is the usual habit: text stays crisp when a slide is projected, and any rasterized element has pixels to spare.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="center">What size should a Figma frame be for PowerPoint?</h2>
+      <div style="max-width:760px;margin:0 auto">
+        <p class="dim">The short answer: <strong>1920 × 1080</strong>. It is 16:9, which is what PowerPoint's default slide is, and it is large enough that anything rasterized during export still looks sharp on a projector or a 4K display.</p>
+        <p class="dim">The longer answer is that the ratio is what matters and the pixel count is a quality decision. PowerPoint stores a slide as 13.333 × 7.5 inches — 12,192,000 × 6,858,000 EMU — and everything on it is positioned in those integer units. When your frame is exported, its pixel coordinates are mapped into that space proportionally. A frame with the same ratio fills the slide edge to edge; a frame with a different ratio gets fitted, which is where unexpected margins come from.</p>
+        <p class="dim">This is also why "my deck came out blurry" is nearly always a design-size question rather than an export-quality question. Native text boxes and shapes are resolution-independent and will look perfect at any projection size. Anything that had to be rasterized — masks, blurs, conic gradients, complex vector art — is only as sharp as the frame it came from. Designing at 1920 × 1080 instead of 1280 × 720 gives those elements more than double the pixels.</p>
+        <p class="dim">Mixing ratios inside one deck is the other common trap. Each frame becomes its own slide, so a selection that mixes 16:9 and 4:3 produces a deck whose slides do not line up. Pick one ratio per export.</p>
+      </div>
+      <div style="max-width:760px;margin:2.4em auto 0">
+      ${f.html}
+      </div>
+      <p class="center dim" style="margin-top:2em">Related: <a href="/tools/font-compatibility-checker/">Font compatibility checker</a> · <a href="/figma-to-pptx/">What is inside the .pptx</a> · <a href="/export-figma-to-powerpoint/">How to export</a></p>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+    var EMU_IN = 914400;
+    var PRESETS = [
+      { label: 'PowerPoint 16:9', w: 12192000 / 914400, h: 7.5 },
+      { label: 'PowerPoint 4:3', w: 10, h: 7.5 },
+      { label: 'Google Slides', w: 10, h: 5.625 },
+      { label: 'A4 landscape', w: 11.69, h: 8.27 },
+      { label: 'Letter landscape', w: 11, h: 8.5 },
+      { label: 'Ultrawide 21:9', w: 16, h: 6.75 }
+    ];
+    var $ = function (id) { return document.getElementById(id); };
+    var wEl = $('w'), hEl = $('h'), unitEl = $('unit'), dpiEl = $('dpi'), outEl = $('out'), ratioEl = $('ratio');
+
+    function toInches(v, unit, dpi) {
+      if (unit === 'in') return v;
+      if (unit === 'cm') return v / 2.54;
+      if (unit === 'emu') return v / EMU_IN;
+      return v / dpi;
+    }
+    function round(n, d) { var p = Math.pow(10, d); return Math.round(n * p) / p; }
+    function gcd(a, b) { return b ? gcd(b, a % b) : a; }
+
+    function ratioOf(wpx, hpx) {
+      var a = Math.round(wpx), b = Math.round(hpx);
+      if (!a || !b) return '';
+      var g = gcd(a, b);
+      var rw = a / g, rh = b / g;
+      if (rw > 40 || rh > 40) return round(a / b, 3) + ' : 1';
+      return rw + ':' + rh;
+    }
+
+    function cell(title, value, copyable) {
+      return '<div class="tool-cell"><span class="tool-cell-t">' + title + '</span>' +
+        '<strong>' + value + '</strong>' +
+        (copyable ? '<button class="tool-copy" data-copy="' + copyable + '">Copy</button>' : '') +
+        '</div>';
+    }
+
+    // A preset keeps its exact inch value (PowerPoint's 16:9 slide is
+    // 12,192,000 EMU = 13.3333… in) while the field shows a readable 13.333.
+    // Any manual edit drops back to whatever the fields say.
+    var exact = null;
+
+    function render() {
+      var unit = unitEl.value, dpi = parseFloat(dpiEl.value) || 96;
+      var wIn = exact ? exact.w : toInches(parseFloat(wEl.value) || 0, unit, dpi);
+      var hIn = exact ? exact.h : toInches(parseFloat(hEl.value) || 0, unit, dpi);
+      var wpx = wIn * dpi, hpx = hIn * dpi;
+      var figma = Math.round(wpx) + ' × ' + Math.round(hpx);
+      outEl.innerHTML =
+        cell('Pixels @ ' + dpi + ' DPI', figma + ' px', figma.replace(/ × /g, 'x')) +
+        cell('Inches', round(wIn, 3) + ' × ' + round(hIn, 3) + ' in', '') +
+        cell('Centimetres', round(wIn * 2.54, 2) + ' × ' + round(hIn * 2.54, 2) + ' cm', '') +
+        cell('EMU', Math.round(wIn * EMU_IN).toLocaleString('en-US') + ' × ' + Math.round(hIn * EMU_IN).toLocaleString('en-US'), '') +
+        cell('Points', round(wIn * 72, 1) + ' × ' + round(hIn * 72, 1) + ' pt', '');
+      ratioEl.textContent = wpx && hpx ? 'Aspect ratio ' + ratioOf(wpx, hpx) + ' · design at 2× for projection: ' + Math.round(wpx * 2) + ' × ' + Math.round(hpx * 2) + ' px' : '';
+    }
+
+    PRESETS.forEach(function (p) {
+      var b = document.createElement('button');
+      b.className = 'tool-preset';
+      b.textContent = p.label;
+      b.addEventListener('click', function () {
+        unitEl.value = 'in';
+        exact = { w: p.w, h: p.h };
+        wEl.value = round(p.w, 3); hEl.value = round(p.h, 3);
+        render();
+      });
+      $('presets').appendChild(b);
+    });
+
+    // Switching the unit converts the numbers already in the fields rather
+    // than reinterpreting them, so 13.333 in becomes 1280 px, not 1280 in.
+    function fromInches(inches, unit, dpi) {
+      if (unit === 'in') return round(inches, 3);
+      if (unit === 'cm') return round(inches * 2.54, 2);
+      if (unit === 'emu') return Math.round(inches * EMU_IN);
+      return round(inches * dpi, 1);
+    }
+
+    var prevUnit = unitEl.value, prevDpi = parseFloat(dpiEl.value) || 96;
+
+    function convertFields() {
+      var dpi = parseFloat(dpiEl.value) || 96;
+      var wIn = exact ? exact.w : toInches(parseFloat(wEl.value) || 0, prevUnit, prevDpi);
+      var hIn = exact ? exact.h : toInches(parseFloat(hEl.value) || 0, prevUnit, prevDpi);
+      wEl.value = fromInches(wIn, unitEl.value, dpi);
+      hEl.value = fromInches(hIn, unitEl.value, dpi);
+      prevUnit = unitEl.value;
+      prevDpi = dpi;
+      render();
+    }
+
+    [wEl, hEl].forEach(function (el) {
+      el.addEventListener('input', function () { exact = null; prevUnit = unitEl.value; prevDpi = parseFloat(dpiEl.value) || 96; render(); });
+    });
+    [unitEl, dpiEl].forEach(function (el) { el.addEventListener('change', convertFields); });
+
+    outEl.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.tool-copy') : null;
+      if (!btn) return;
+      var text = btn.getAttribute('data-copy');
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function () {
+          var old = btn.textContent; btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = old; }, 1200);
+        });
+      }
+    });
+
+    render();
+  })();
+  </script>
+`,
+};

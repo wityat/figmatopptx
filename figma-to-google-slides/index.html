@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Figma to Google Slides — the Editable Way (via PPTX)</title>
+  <meta name="description" content="Google Slides has no Figma importer, but it reads .pptx natively. Export an editable .pptx from Figma, import it into Slides, and keep your text and shapes live.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="theme-color" content="#16161e">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Figma to Google Slides — the Editable Way (via PPTX)">
+  <meta property="og:description" content="Google Slides has no Figma importer, but it reads .pptx natively. Export an editable .pptx from Figma, import it into Slides, and keep your text and shapes live.">
+  <meta property="og:image" content="https://figmatopptx.com/assets/cover.png">
+  <meta property="og:url" content="https://figmatopptx.com/figma-to-google-slides/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://figmatopptx.com/figma-to-google-slides/">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "PPTX Export — Figma to Editable PowerPoint",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Figma (Windows, macOS, web)",
+      "url": "https://www.figma.com/community/plugin/1658228847345139243",
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "name": "Free — 3 exports per month"
+        },
+        {
+          "@type": "Offer",
+          "price": "12",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (monthly)"
+        },
+        {
+          "@type": "Offer",
+          "price": "69",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (yearly)"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is there a direct Figma → Google Slides plugin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No plugin writes into Google Slides natively — Google does not expose that kind of write access to a Figma plugin. Every tool that claims \"Figma to Google Slides\" either goes through a .pptx like this one, or asks you to sign in and hand your design to their server. We go through the .pptx and keep your file on your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do embedded fonts work in Google Slides?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and no exporter can change that — Google Slides ignores embedded font parts and renders with fonts from its own library. This is the one place where our font embedding does not help. If Google Slides is your final destination, use a family Google has (or let the plugin remap to a safe family) rather than an exotic licensed typeface. If PowerPoint or Keynote is the destination, embedding works and your typography travels."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will the slides be editable in Google Slides?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Text boxes stay real text and shapes stay real shapes, so yes — click and retype. Anything the report listed as rasterized arrives as a picture in Google Slides too, exactly as it did in PowerPoint."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do my images look softer after import?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Google Slides downscales very large image fills on import. Exporting with file-size optimization on keeps images closer to the size Slides is happy with, so there is less resampling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I just upload the .pptx to Drive instead?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Drop the .pptx into Google Drive and open it with Google Slides — it converts on open. Use File → Import slides when you want the slides merged into an existing deck instead of a new one."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "HowTo",
+      "name": "Import Figma frames into Google Slides as editable slides",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Export an editable .pptx from Figma",
+          "text": "Select your frames, run the PPTX Export plugin and download the .pptx. Google Slides has no Figma importer, so the .pptx is the bridge."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Open Google Slides",
+          "text": "Create a new presentation or open the deck you want the slides to land in."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Import the slides",
+          "text": "Choose File, then Import slides, then Upload, and drop in the .pptx you just exported."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Pick the slides and keep the theme",
+          "text": "Select all slides and leave Keep original theme ticked so your design is not restyled by the Google template."
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/favicon.png" alt="" width="28" height="28">PPTX Export</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/export-figma-to-powerpoint/">How to export</a>
+      <a href="/conversion-report/">Conversion report</a>
+      <a href="/tools/slide-size-calculator/">Tools</a>
+      <a href="/pro.html">Pricing</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>How to Get Figma Frames into Google Slides — Editable</h1>
+      <p class="lede">Google Slides cannot open a Figma file. It <strong>can</strong> open a .pptx. So the honest route is a real editable .pptx in the middle — and that is the part most tools get wrong.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </div>
+
+
+  <section>
+    <div class="wrap">
+      <span class="kicker">The route</span>
+      <h2>Figma → .pptx → Google Slides</h2>
+      <p class="dim">Four steps. The only part that needs a tool is the first one — and it is the part that decides whether your text is still text at the end.</p>
+      <div class="grid-3">
+        <div class="card">
+          <span class="step-num">1</span>
+          <h3>Export from Figma</h3>
+          <p>Select frames, run <strong>PPTX Export</strong>, download the .pptx. Use the default <em>exact look + editable text</em> mode, or <em>fully editable</em> if you want native shapes too.</p>
+        </div>
+        <div class="card">
+          <span class="step-num">2</span>
+          <h3>File → Import slides</h3>
+          <p>In Google Slides open <strong>File → Import slides → Upload</strong> and drop in the .pptx.</p>
+        </div>
+        <div class="card">
+          <span class="step-num">3</span>
+          <h3>Keep the original theme</h3>
+          <p>Select all slides and leave <strong>Keep original theme</strong> ticked — otherwise Slides restyles your design with its own template.</p>
+        </div>
+      </div>
+      <p class="dim center" style="margin-top:1.6em">Prefer a whole new deck? Drop the .pptx into Google Drive and open it with Google Slides — same conversion, one less dialog.</p>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">What survives the trip into Google Slides</h2>
+      <p class="section-intro">Slides is not PowerPoint, and pretending otherwise is how people get burned. Here is the honest matrix.</p>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Element</th><th>In PowerPoint</th><th>In Google Slides</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Text boxes</td><td class="yes">Editable</td><td class="yes">Editable</td></tr>
+            <tr><td>Rectangles, ellipses, lines</td><td class="yes">Native shapes</td><td class="yes">Native shapes</td></tr>
+            <tr><td>Linear / radial gradients</td><td class="yes">Native gradient</td><td class="yes">Native gradient</td></tr>
+            <tr><td>Embedded fonts</td><td class="yes">Render from the file</td><td>Ignored — Slides uses its own font library</td></tr>
+            <tr><td>Large image fills</td><td class="yes">As exported</td><td>Downscaled on import</td></tr>
+            <tr><td>Rasterized nodes (masks, blurs, conic gradients)</td><td>Pictures, listed in the report</td><td>Pictures, same as in PowerPoint</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="feature">
+        <div class="feature-copy">
+          <span class="kicker">The font caveat, stated plainly</span>
+          <h2>Embedding is our differentiator — and Google Slides is where it stops working</h2>
+          <p>Font embedding is the reason this plugin exists: a .pptx that carries its own typefaces renders correctly on a machine that has never heard of Inter or Montserrat. PowerPoint and Keynote honour those embedded font parts. <strong>Google Slides does not.</strong></p>
+          <p>No exporter can work around that, and any tool promising perfect custom typography inside Google Slides is overselling. What we can do is be useful about it: if Slides is your destination, pick a family Google also has, or let the plugin remap to a PowerPoint-safe family and tell you exactly which swap it made.</p>
+          <p><a href="/tools/font-compatibility-checker/">Check your typeface →</a></p>
+        </div>
+        <figure class="feature-media">
+          <img src="/assets/carousel-3.png" alt="Plugin export screen with a fonts panel showing which families will be embedded" width="1920" height="1080">
+          <figcaption>Every font is accounted for before you export.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">Frequently asked</h2>
+      <div style="max-width:760px;margin:0 auto">
+      <div class="faq">
+        <details>
+          <summary>Is there a direct Figma → Google Slides plugin?</summary>
+          <p>No plugin writes into Google Slides natively — Google does not expose that kind of write access to a Figma plugin. Every tool that claims "Figma to Google Slides" either goes through a .pptx like this one, or asks you to sign in and hand your design to their server. We go through the .pptx and keep your file on your machine.</p>
+        </details>
+        <details>
+          <summary>Do embedded fonts work in Google Slides?</summary>
+          <p>No, and no exporter can change that — Google Slides ignores embedded font parts and renders with fonts from its own library. This is the one place where our font embedding does not help. If Google Slides is your final destination, use a family Google has (or let the plugin remap to a safe family) rather than an exotic licensed typeface. If PowerPoint or Keynote is the destination, embedding works and your typography travels.</p>
+        </details>
+        <details>
+          <summary>Will the slides be editable in Google Slides?</summary>
+          <p>Text boxes stay real text and shapes stay real shapes, so yes — click and retype. Anything the report listed as rasterized arrives as a picture in Google Slides too, exactly as it did in PowerPoint.</p>
+        </details>
+        <details>
+          <summary>Why do my images look softer after import?</summary>
+          <p>Google Slides downscales very large image fills on import. Exporting with file-size optimization on keeps images closer to the size Slides is happy with, so there is less resampling.</p>
+        </details>
+        <details>
+          <summary>Can I just upload the .pptx to Drive instead?</summary>
+          <p>Yes. Drop the .pptx into Google Drive and open it with Google Slides — it converts on open. Use File → Import slides when you want the slides merged into an existing deck instead of a new one.</p>
+        </details>
+      </div>
+      </div>
+      <p class="center dim" style="margin-top:2em">Related: <a href="/export-figma-to-powerpoint/">Step-by-step PowerPoint export</a> · <a href="/figma-presentation-export/">Every Figma presentation export option</a> · <a href="/convert-figma-to-ppt/">Convert Figma to PPT</a></p>
+    </div>
+  </section>
+
+
+  <section class="alt">
+    <div class="wrap center">
+      <h2>Hand off a deck people can actually edit</h2>
+      <p class="section-intro">Editable where possible, embedded where it matters, transparent always — that's the whole promise.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-cols">
+      <nav aria-label="Product">
+        <h3>Product</h3>
+        <a href="/">Home</a>
+        <a href="/pro.html">Pricing &amp; Pro</a>
+        <a href="https://www.figma.com/community/plugin/1658228847345139243">Install on Figma Community</a>
+      </nav>
+      <nav aria-label="Guides">
+        <h3>Guides</h3>
+        <a href="/figma-to-pptx/">Figma to PPTX</a>
+        <a href="/export-figma-to-powerpoint/">Export Figma to PowerPoint</a>
+        <a href="/convert-figma-to-ppt/">Convert Figma to PPT</a>
+        <a href="/figma-to-google-slides/">Figma to Google Slides</a>
+        <a href="/figma-presentation-export/">Figma presentation export</a>
+        <a href="/figma-slides-to-powerpoint-editable/">Figma Slides to PowerPoint</a>
+        <a href="/figma-export-editable-pptx/">Editable PPTX explained</a>
+        <a href="/pitchdeck-alternative/">Pitchdeck alternative</a>
+      </nav>
+      <nav aria-label="Free tools">
+        <h3>Free tools</h3>
+        <a href="/tools/slide-size-calculator/">Slide size calculator</a>
+        <a href="/tools/font-compatibility-checker/">Font compatibility checker</a>
+        <a href="/conversion-report/">What the report tells you</a>
+      </nav>
+      <nav aria-label="Legal">
+        <h3>Legal</h3>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/refunds.html">Refund Policy</a>
+      </nav>
+    </div>
+    <p class="footer-note">PPTX Export — Figma to Editable PowerPoint. Conversion happens entirely on your machine, inside Figma — your designs are never uploaded to any server.</p>
+  </div>
+</footer>
+
+</body>
+</html>

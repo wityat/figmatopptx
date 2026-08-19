@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Figma Export to Editable PPTX — How Real Conversion Works</title>
+  <meta name="description" content="The anatomy of an honest Figma to PowerPoint conversion: which nodes become native objects, which become pictures and why, and how fonts get embedded into the file.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta name="theme-color" content="#16161e">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Figma Export to Editable PPTX — How Real Conversion Works">
+  <meta property="og:description" content="The anatomy of an honest Figma to PowerPoint conversion: which nodes become native objects, which become pictures and why, and how fonts get embedded into the file.">
+  <meta property="og:image" content="https://figmatopptx.com/assets/cover.png">
+  <meta property="og:url" content="https://figmatopptx.com/figma-export-editable-pptx/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://figmatopptx.com/figma-export-editable-pptx/">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "PPTX Export — Figma to Editable PowerPoint",
+      "applicationCategory": "DesignApplication",
+      "operatingSystem": "Figma (Windows, macOS, web)",
+      "url": "https://www.figma.com/community/plugin/1658228847345139243",
+      "offers": [
+        {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "name": "Free — 3 exports per month"
+        },
+        {
+          "@type": "Offer",
+          "price": "12",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (monthly)"
+        },
+        {
+          "@type": "Offer",
+          "price": "69",
+          "priceCurrency": "USD",
+          "name": "Pro — unlimited exports (yearly)"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why not convert everything to native shapes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because some things have no native equivalent, and faking them produces a deck that looks wrong. A Figma mask, a layer blur, an inner shadow, a conic gradient and a multiply blend cannot be expressed in the PowerPoint drawing model. The choice is between an exact picture with a written reason, or a native object that renders differently from your design. We pick the picture and tell you."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which gradients stay native?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Linear, radial and diamond gradients become native PowerPoint gradient fills, including on rectangles, ellipses and frame backgrounds. Angular (conic) gradients have no equivalent in the format and are rasterized."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an EOT and why does it appear in font embedding?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PowerPoint embeds typefaces in a compact font format inside the package. The plugin converts your TTF into that form before writing it in, which is why the deck renders with your typography on a machine that never had the font installed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support variable fonts?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A variable font is embedded as the concrete styles used in your frames — regular, bold, italic, bold italic. Arbitrary intermediate weights are matched to the nearest embedded style rather than silently dropped."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to a node type you have never seen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It becomes a picture with the reason \"unsupported node type\", rather than throwing an error and losing your export. New Figma features degrade gracefully instead of breaking the run."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/favicon.png" alt="" width="28" height="28">PPTX Export</a>
+    <nav class="site-nav">
+      <a href="/">Home</a>
+      <a href="/export-figma-to-powerpoint/">How to export</a>
+      <a href="/conversion-report/">Conversion report</a>
+      <a href="/tools/slide-size-calculator/">Tools</a>
+      <a href="/pro.html">Pricing</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>Editable PPTX from Figma: How Honest Conversion Actually Works</h1>
+      <p class="lede">Every converter faces the same wall — the PowerPoint format cannot express everything Figma can draw. What separates them is what they do <strong>at</strong> that wall.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </div>
+
+
+  <section>
+    <div class="wrap">
+      <span class="kicker">The anatomy</span>
+      <h2>Three outcomes, and a rule for each</h2>
+      <p class="dim" style="max-width:760px">The converter walks your frame tree node by node. Each node ends up in exactly one of three states, decided by a fixed rule set rather than by guesswork — the same rules you can preview in the <a href="/convert-figma-to-ppt/">pre-flight checklist</a>.</p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3 style="color:var(--ok)">✓ Native object</h3>
+          <p>Text, rectangles, ellipses, straight lines, straight-segment vectors, standard polygons and stars, image fills. These become PowerPoint objects with their fills, strokes, radii, gradients and drop shadows intact.</p>
+        </div>
+        <div class="card">
+          <h3 style="color:var(--accent)">⚠ Picture, with a reason</h3>
+          <p>Masks, blurs, inner shadows, blend modes, conic gradients, curved or filled vector art, text with a non-solid fill. Rendered at high resolution so it looks exact — and named in the report.</p>
+        </div>
+        <div class="card">
+          <h3>Aa Font decision</h3>
+          <p>Every family used lands in one of three baskets: embedded, honestly remapped, or "needs your file". No family passes through unexamined.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">The exact reasons a node becomes a picture</h2>
+      <p class="section-intro">These are the real strings the converter writes into your report. Not marketing categories — the actual decision points.</p>
+      <div class="table-scroll">
+        <table class="compare">
+          <thead>
+            <tr><th>Reason in the report</th><th>What triggered it</th><th>What you can do</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code class="key">mask node</code></td><td>The layer is a mask, or its group contains one</td><td>Flatten the masked group in Figma if you need it editable</td></tr>
+            <tr><td><code class="key">blend mode …</code></td><td>Anything other than Normal / Pass-through</td><td>Bake the blend into the artwork, or accept the picture</td></tr>
+            <tr><td><code class="key">blur effect</code></td><td>Layer blur or background blur</td><td>No native equivalent — keep it as a picture</td></tr>
+            <tr><td><code class="key">inner shadow</code></td><td>Inner shadow effect (drop shadow is native)</td><td>Swap to a drop shadow where the design allows</td></tr>
+            <tr><td><code class="key">angular gradient fill</code></td><td>Conic gradient</td><td>Use linear or radial — both convert natively</td></tr>
+            <tr><td><code class="key">text with non-solid fill</code></td><td>A gradient or image fill on a text layer</td><td>Solid-fill the text to keep it editable</td></tr>
+            <tr><td><code class="key">complex vector (curves or filled geometry)</code></td><td>Bezier curves or filled vector art</td><td>Expected — logos and illustrations belong as pictures</td></tr>
+            <tr><td><code class="key">unsupported POLYGON pointCount N</code></td><td>A point count with no PowerPoint preset</td><td>Use a standard polygon or star count</td></tr>
+            <tr><td><code class="key">unsupported node type …</code></td><td>A node type the converter has not met</td><td>Nothing — it degrades safely instead of failing</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="dim center" style="margin-top:1.4em">Every line names the layer, so you can find it in Figma in seconds.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="feature">
+        <div class="feature-copy">
+          <span class="kicker">Fonts, in three baskets</span>
+          <h2>How your typography actually gets into the file</h2>
+          <p><strong>Embedded.</strong> The real font bytes are written into the .pptx as font parts. Eight popular families ship with the plugin — Inter, Roboto, Montserrat, Poppins, Open Sans, Lato, Nunito and DM Sans — and any other typeface is embedded once you upload its <code class="key">.ttf</code>. The deck then renders correctly on a machine that has never installed it.</p>
+          <p><strong>Remapped.</strong> No bytes available, but a sensible PowerPoint-safe substitute exists — Inter → Calibri, Montserrat → Trebuchet MS, Helvetica → Arial, Playfair Display → Georgia. The report prints the swap as <em>from → to</em>. There is also a Cyrillic safeguard: if the text contains Cyrillic and the chosen face is not guaranteed to cover it, the converter forces a family that does, so your text never arrives as a row of empty boxes.</p>
+          <p><strong>Needs your file.</strong> Not PowerPoint-safe and no known mapping. The plugin says so plainly and offers the upload, rather than writing a font name into the file and hoping.</p>
+          <p><a href="/tools/font-compatibility-checker/">Look up your own font →</a></p>
+        </div>
+        <figure class="feature-media">
+          <img src="/assets/carousel-3.png" alt="Font panel in the plugin showing families marked as embedded before export" width="1920" height="1080">
+          <figcaption>Fonts are resolved before the export runs, not after it fails.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <h2 class="center">Limits, stated up front</h2>
+      <p class="section-intro">A list every converter should publish and almost none do.</p>
+      <ul class="dim" style="max-width:760px;margin:0 auto">
+        <li>Conic gradients, masks, blurs, inner shadows and non-normal blend modes are pictures. This is a format limitation, not a roadmap item.</li>
+        <li>Curved and filled vector artwork is rasterized; only straight-segment vectors become native polylines.</li>
+        <li>Figma prototype interactions, transitions and Figma Slides speaker notes do not exist in .pptx and are not carried over.</li>
+        <li>Google Slides ignores embedded fonts — see <a href="/figma-to-google-slides/">the Google Slides page</a> for what to do instead.</li>
+        <li>Photo-heavy decks produce large files. Optimization is on by default; turn it off only when you want maximum fidelity.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="center">Frequently asked</h2>
+      <div style="max-width:760px;margin:0 auto">
+      <div class="faq">
+        <details>
+          <summary>Why not convert everything to native shapes?</summary>
+          <p>Because some things have no native equivalent, and faking them produces a deck that looks wrong. A Figma mask, a layer blur, an inner shadow, a conic gradient and a multiply blend cannot be expressed in the PowerPoint drawing model. The choice is between an exact picture with a written reason, or a native object that renders differently from your design. We pick the picture and tell you.</p>
+        </details>
+        <details>
+          <summary>Which gradients stay native?</summary>
+          <p>Linear, radial and diamond gradients become native PowerPoint gradient fills, including on rectangles, ellipses and frame backgrounds. Angular (conic) gradients have no equivalent in the format and are rasterized.</p>
+        </details>
+        <details>
+          <summary>What is an EOT and why does it appear in font embedding?</summary>
+          <p>PowerPoint embeds typefaces in a compact font format inside the package. The plugin converts your TTF into that form before writing it in, which is why the deck renders with your typography on a machine that never had the font installed.</p>
+        </details>
+        <details>
+          <summary>Do you support variable fonts?</summary>
+          <p>A variable font is embedded as the concrete styles used in your frames — regular, bold, italic, bold italic. Arbitrary intermediate weights are matched to the nearest embedded style rather than silently dropped.</p>
+        </details>
+        <details>
+          <summary>What happens to a node type you have never seen?</summary>
+          <p>It becomes a picture with the reason "unsupported node type", rather than throwing an error and losing your export. New Figma features degrade gracefully instead of breaking the run.</p>
+        </details>
+      </div>
+      </div>
+      <p class="center dim" style="margin-top:2em">Related: <a href="/conversion-report/">The conversion report explained</a> · <a href="/figma-to-pptx/">What is inside the .pptx</a> · <a href="/pitchdeck-alternative/">How this compares to the paid studios</a></p>
+    </div>
+  </section>
+
+
+  <section class="alt">
+    <div class="wrap center">
+      <h2>Hand off a deck people can actually edit</h2>
+      <p class="section-intro">Editable where possible, embedded where it matters, transparent always — that's the whole promise.</p>
+      <div class="cta-group">
+        <a class="btn btn-primary" href="https://www.figma.com/community/plugin/1658228847345139243">Install the free Figma plugin</a>
+        <span class="cta-note">3 free exports/month · no signup</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-cols">
+      <nav aria-label="Product">
+        <h3>Product</h3>
+        <a href="/">Home</a>
+        <a href="/pro.html">Pricing &amp; Pro</a>
+        <a href="https://www.figma.com/community/plugin/1658228847345139243">Install on Figma Community</a>
+      </nav>
+      <nav aria-label="Guides">
+        <h3>Guides</h3>
+        <a href="/figma-to-pptx/">Figma to PPTX</a>
+        <a href="/export-figma-to-powerpoint/">Export Figma to PowerPoint</a>
+        <a href="/convert-figma-to-ppt/">Convert Figma to PPT</a>
+        <a href="/figma-to-google-slides/">Figma to Google Slides</a>
+        <a href="/figma-presentation-export/">Figma presentation export</a>
+        <a href="/figma-slides-to-powerpoint-editable/">Figma Slides to PowerPoint</a>
+        <a href="/figma-export-editable-pptx/">Editable PPTX explained</a>
+        <a href="/pitchdeck-alternative/">Pitchdeck alternative</a>
+      </nav>
+      <nav aria-label="Free tools">
+        <h3>Free tools</h3>
+        <a href="/tools/slide-size-calculator/">Slide size calculator</a>
+        <a href="/tools/font-compatibility-checker/">Font compatibility checker</a>
+        <a href="/conversion-report/">What the report tells you</a>
+      </nav>
+      <nav aria-label="Legal">
+        <h3>Legal</h3>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/refunds.html">Refund Policy</a>
+      </nav>
+    </div>
+    <p class="footer-note">PPTX Export — Figma to Editable PowerPoint. Conversion happens entirely on your machine, inside Figma — your designs are never uploaded to any server.</p>
+  </div>
+</footer>
+
+</body>
+</html>
