@@ -38,15 +38,25 @@
       'checkout.completed': 'purchase_completed'
     };
     var currentPlan = null;
+    var currentPlacement = null;
+    // A checkout that fails to open must not dead-end the buyer: reveal the
+    // e-mail order right where they clicked.
+    function showOrderFallback() {
+      var els = document.querySelectorAll('.order-fallback');
+      for (var i = 0; i < els.length; i++) els[i].style.display = 'block';
+    }
     function onPaddleEvent(ev) {
       var name = ev && PADDLE_EVENTS[ev.name];
+      if (name === 'checkout_error') showOrderFallback();
       if (!name || !window.track) return;
       var d = ev.data || {};
       window.track(name, {
         plan: currentPlan,
+        placement: currentPlacement,
         transaction_id: d.transaction_id || d.id || null,
         currency: d.currency_code || null,
         country: d.customer && d.customer.address ? d.customer.address.country_code : null,
+        error_code: (ev.error && ev.error.code) || ev.code || null,
         error: ev.error ? String(ev.error.detail || ev.error.code || ev.error) : (ev.detail || null)
       });
     }
@@ -54,17 +64,17 @@
     // checkout is not ready yet — that line costs sales the moment it is wrong.
     document.addEventListener('DOMContentLoaded', function () {
       if (!paddleReady) return;
-      var note = document.getElementById('checkout-note');
-      if (note) note.innerHTML = 'Secure checkout by Paddle · 14-day money-back guarantee';
+      var notes = document.querySelectorAll('.checkout-note');
+      for (var i = 0; i < notes.length; i++) notes[i].innerHTML = 'Secure checkout by Paddle · 14-day money-back guarantee · license key by email';
     });
-    function buyPro(plan) {
+    function buyPro(plan, placement) {
       currentPlan = plan;
-      if (window.track) window.track('checkout_clicked', { plan: plan, paddle_ready: paddleReady });
+      currentPlacement = placement || null;
+      if (window.track) window.track('checkout_clicked', { plan: plan, placement: currentPlacement, paddle_ready: paddleReady });
       if (paddleReady) {
         Paddle.Checkout.open({ items: [{ priceId: PRICES[plan], quantity: 1 }] });
       } else {
-        var el = document.getElementById('order-fallback');
-        if (el) el.style.display = 'block';
+        showOrderFallback();
       }
       return false;
     }
@@ -92,6 +102,15 @@
     <div class="wrap">
       <h1>Go Pro — unlimited exports.</h1>
       <p class="lede">The free plan stays: <strong>3 full-quality exports every month, no signup.</strong> Pro removes the limit when exporting decks is part of your job.</p>
+      <div class="cta-group">
+        <div class="buy-buttons">
+          <a class="btn btn-primary" href="#" onclick="return buyPro('yearly', 'hero')">Get Pro — $69/year <span class="save">save 52%</span></a>
+          <a class="btn btn-secondary" href="#" onclick="return buyPro('monthly', 'hero')">$12/month</a>
+        </div>
+        <p class="order-fallback" style="display:none">Checkout didn't open — to order today, email
+          <strong>ttrttr449@gmail.com</strong> and you'll get your license key by reply.</p>
+        <span class="cta-note checkout-note">Email us to order today: <strong>ttrttr449@gmail.com</strong></span>
+      </div>
     </div>
   </div>
 
@@ -156,12 +175,12 @@
       <p class="section-intro">$12/month or $69/year. You'll receive a license key and activate it right inside the plugin — no account needed.</p>
       <div class="cta-group">
         <div class="buy-buttons">
-          <a class="btn btn-primary" href="#" onclick="return buyPro('monthly')">Get Pro — $12/month</a>
-          <a class="btn btn-primary" href="#" onclick="return buyPro('yearly')">Get Pro — $69/year</a>
+          <a class="btn btn-primary" href="#" onclick="return buyPro('monthly', 'bottom')">Get Pro — $12/month</a>
+          <a class="btn btn-primary" href="#" onclick="return buyPro('yearly', 'bottom')">Get Pro — $69/year</a>
         </div>
-        <p id="order-fallback" style="display:none">Checkout is opening soon — to order today, email
+        <p class="order-fallback" style="display:none">Checkout didn't open — to order today, email
           <strong>ttrttr449@gmail.com</strong> and you'll get your license key by reply.</p>
-        <span class="cta-note" id="checkout-note">Checkout opening soon — email us to order today: <strong>ttrttr449@gmail.com</strong></span>
+        <span class="cta-note checkout-note">Email us to order today: <strong>ttrttr449@gmail.com</strong></span>
       </div>
       <p class="dim" style="margin-top: 1.6em; font-size: 0.9rem;">Purchases will be processed by Paddle.com as our Merchant of Record.</p>
     </div>

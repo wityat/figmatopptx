@@ -134,6 +134,18 @@ a:hover { text-decoration-thickness: 2px; }
 
 .cta-note { font-size: 0.92rem; color: var(--text-dim); }
 
+.buy-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.btn .save {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(23, 18, 15, 0.16);
+  font-size: 0.78rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.order-fallback { max-width: 520px; margin: 0; }
+
 /* ---------- Sections & feature blocks ---------- */
 
 section { padding: 56px 0; }
