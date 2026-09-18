@@ -119,6 +119,7 @@ export function page({ path, title, description, h1, lede, body, schemas = [], o
   <script type="application/ld+json">
 ${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2)}
   </script>
+  <script src="/assets/analytics.js" defer></script>
 </head>
 <body>
 
