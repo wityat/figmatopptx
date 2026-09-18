@@ -14,7 +14,7 @@
 (function () {
   // Project API key (phc_...). Public by design, same as the Paddle token.
   // Empty key = analytics off, track() is a no-op.
-  var POSTHOG_KEY = '';
+  var POSTHOG_KEY = 'phc_C4Z3AcFDYZEkuiDG6Jx42atsQPzbxWT5XTaSEJw5DATY';
   // Must match the region the PostHog project was created in.
   var POSTHOG_HOST = 'https://eu.i.posthog.com';
 
