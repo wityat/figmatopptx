@@ -41,7 +41,7 @@ async function settle() { for (let i = 0; i < 20; i++) await new Promise(setImme
 test('monthly checkout is tied to a private claim; Paddle receives only its hash', async () => {
   const s = setup(); assert.equal(s.context.buyPro('monthly', 'hero'), false); await settle();
   assert.equal(s.calls.length, 1);
-  assert.equal(s.calls[0].items[0].priceId, 'pri_01kxesst98ht76dsatz6hx81pt');
+  assert.equal(s.calls[0].items[0].priceId, 'pri_01m39kr4dq1zbg6vx4ma2mv82b');
   const claim = JSON.parse(s.storage.get('pptx-purchase-claim'));
   assert.equal(claim.claimToken.length, 64);
   assert.equal(s.calls[0].customData.license_claim_hash.length, 64);

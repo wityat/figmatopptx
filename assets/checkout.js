@@ -1,5 +1,5 @@
-var PADDLE_TOKEN = 'live_c65062161f978340a28cff2b71a';
-var PRICES = { monthly: 'pri_01kxesst98ht76dsatz6hx81pt', yearly: 'pri_01kxestwwzmneef6r0zfjwwhb0' };
+var PADDLE_TOKEN = 'live_8220a4ab81c91e922ae3581e66e';
+var PRICES = { monthly: 'pri_01m39kr4dq1zbg6vx4ma2mv82b', yearly: 'pri_01m39ksby33hqm2hvtc7feqd20' };
 var LICENSE_API = 'https://dashboard.my-own-recipe-book.com/pptx-billing';
 var claimStorageKey = 'pptx-purchase-claim';
 var currentClaim = null;
