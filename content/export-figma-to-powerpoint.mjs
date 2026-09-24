@@ -17,7 +17,7 @@ const f = faq([
   ['Why is my gradient a picture?',
    'Linear, radial and diamond gradients convert to native PowerPoint gradients. Angular (conic) gradients have no equivalent in the PowerPoint format at all, so they are rasterized — and the report names the node and the reason. Same story for masks, blurs, inner shadows and blend modes.'],
   ['Is my design uploaded anywhere?',
-   'No. The conversion runs entirely inside Figma on your machine. The plugin ships with no network access — you can verify that badge on its Figma Community page.'],
+   'No. Conversion runs entirely inside Figma on your machine. Pro connects to our licensing service to check your subscription, but your designs are never uploaded.'],
   ['Can I go the other way, PowerPoint into Figma?',
    'Not with this plugin. It is a one-way Figma → PPTX exporter, deliberately doing one job well. Several import-focused plugins exist for the opposite direction.'],
 ]);

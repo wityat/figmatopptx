@@ -6,7 +6,7 @@ const f = faq([
   ['Is it really free?',
    'Three exports every month, free forever, with no signup, no email and no watermark — full quality and the full report. Failed exports do not count against the quota, and it resets on the 1st. Unlimited exports are $12/month or $69/year.'],
   ['Where does my design go?',
-   'Nowhere. Conversion happens inside Figma on your machine. The plugin is published with <strong>no network access at all</strong> — a badge Figma shows on the plugin page, which we cannot fake.'],
+   'Nowhere. Conversion happens inside Figma on your machine. Pro sends only a license key to our licensing service; your designs are never uploaded.'],
   ['How long does a conversion take?',
    'About six seconds for a five-slide deck. Photo-heavy decks take longer, mostly spent rendering image fills; the progress bar shows which stage you are in rather than a fake percentage.'],
   ['What if the result is not good enough?',
@@ -64,7 +64,7 @@ export default {
           <span class="kicker">Why there is no "upload your file here"</span>
           <h2>A converter you do not have to trust with your design</h2>
           <p>Most web converters ask you to upload the thing you are trying to protect. For a personal moodboard, fine. For an unreleased product, a client's brand refresh, an investor deck under NDA — that upload is a decision someone in legal would like to have been asked about.</p>
-          <p>This converter runs where your design already lives. The plugin is published with <strong>no network access</strong>, so it is not a promise in a privacy policy — it is a permission the plugin does not hold. Figma displays that badge on the plugin page; go look.</p>
+          <p>This converter runs where your design already lives. Your frames, text, images and fonts stay inside Figma. Pro connects only to our licensing service to check the paid subscription period.</p>
           <p>The practical upside: no queue, no upload time, no file-size limit imposed by someone's server, and nothing to delete afterwards.</p>
         </div>
         <figure class="feature-media">

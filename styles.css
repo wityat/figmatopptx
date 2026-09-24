@@ -514,3 +514,4 @@ code.key {
   .preflight { grid-template-columns: 1fr; }
   .tool-out { grid-template-columns: 1fr; }
 }
+[hidden] { display: none !important; }

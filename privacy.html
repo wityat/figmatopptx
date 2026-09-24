@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy Policy — PPTX Export (Figma to PowerPoint Plugin)</title>
-  <meta name="description" content="Privacy Policy for PPTX Export: conversion runs locally inside Figma, your designs never leave Figma, this site sets no cookies and runs no analytics.">
+  <meta name="description" content="Your designs stay in Figma. Learn about Pro license checks, Paddle payments and website usage statistics.">
   <link rel="stylesheet" href="./styles.css">
   <link rel="icon" type="image/png" href="./favicon.png">
   <meta name="theme-color" content="#16161e">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Privacy Policy — PPTX Export">
-  <meta property="og:description" content="Your designs never leave Figma. No trackers, no cookies, no analytics.">
+  <meta property="og:description" content="Your designs stay in Figma. Pro license checks, Paddle payments and website usage statistics explained.">
   <meta property="og:image" content="https://figmatopptx.com/assets/cover.png">
   <link rel="canonical" href="https://figmatopptx.com/privacy.html">
   <script src="/assets/analytics.js" defer></script>
@@ -32,7 +32,7 @@
 
 <main class="legal">
   <h1>Privacy Policy</h1>
-  <p class="updated">Last updated: September 18, 2026</p>
+  <p class="updated">Last updated: September 24, 2026</p>
 
   <p>This policy describes what data <strong>PPTX Export — Figma to Editable PowerPoint</strong> (the "Plugin") and this website handle. The short version: <strong>very little, and never your designs.</strong></p>
 
@@ -46,16 +46,17 @@
     <li>your license key and its activation status, if you purchase Pro;</li>
     <li>your export preferences (selected mode, toggles).</li>
   </ul>
-  <p>This data stays on your machine and is not transmitted to us.</p>
+  <p>Your export counter and preferences stay in Figma. When you activate or use Pro, the Plugin sends your license key to our licensing service to check its paid subscription period. It does not send your designs, file names or Figma account identifier. Our server necessarily receives technical connection data such as your IP address.</p>
 
   <h2>3. This website</h2>
-  <p>This website is a set of static pages. It sets <strong>no cookies</strong> and shows no ads.</p>
+  <p>This website shows no ads. Our usage analytics use browser session storage rather than cookies. Paddle processes checkout data under its own privacy policy.</p>
   <p>We use <strong>PostHog</strong> (EU-hosted) for anonymous usage statistics, so we can see which pages are visited and whether the checkout works. It records page views and a few named actions — clicking "Install", opening the pricing page, opening, closing or completing the checkout — together with standard technical data (browser, device type, referring site, approximate country derived from your IP address). It does <strong>not</strong> record your email, payment details, keystrokes or session replays, and it builds no profile of you: the random visitor id lives only in your browser tab's session storage and is gone when you close the tab.</p>
-  <p>On the pricing page we also load <strong>Paddle.js</strong>, the script that opens the secure checkout (see §4). Analytics covers this website only — the Plugin itself has no network access and sends nothing.</p>
+  <p>On the pricing page we also load <strong>Paddle.js</strong>, which opens secure checkout and integrates Paddle's payment recovery service (see §4). Analytics covers this website only. The Plugin connects only to our Pro license validation endpoint.</p>
 
   <h2>4. Purchases</h2>
   <p>When you buy Pro, the purchase is processed by <strong>Paddle.com</strong> as our Merchant of Record. Paddle collects and processes the data needed to complete the transaction (such as your email address, payment details and billing country, including for tax purposes) under its own <a href="https://www.paddle.com/legal/privacy">Privacy Policy</a>. We receive from Paddle the information needed to deliver and support your license — typically your email address and order details. We never see or store your full payment card details.</p>
 
+  <p>To deliver Pro, our licensing service stores license keys, Paddle transaction and subscription identifiers, subscription status, paid-through dates, refund markers and webhook event identifiers. A random purchase claim token stays in your browser tab's session storage; its hash is sent to Paddle and stored by our service so only that browser can retrieve the purchased key. Save the key before closing the tab. We do not store full webhook payloads or payment card details in the license database.</p>
   <h2>5. Support email</h2>
   <p>If you email us at <strong>ttrttr449@gmail.com</strong>, we receive your email address and whatever you include in the message. We use it only to answer you and to handle your order or support request, and we don't add you to any mailing list.</p>
 

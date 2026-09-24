@@ -18,67 +18,7 @@
        (embedded in page source). Checkout works after Paddle verification +
        domain approval; until then buttons fall back to the email order. -->
   <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-  <script>
-    var PADDLE_TOKEN = 'live_c65062161f978340a28cff2b71a';
-    var PRICES = { monthly: 'pri_01kxesst98ht76dsatz6hx81pt', yearly: 'pri_01kxestwwzmneef6r0zfjwwhb0' };
-    var paddleReady = false;
-    if (PADDLE_TOKEN.indexOf('live_') === 0) {
-      try { Paddle.Initialize({ token: PADDLE_TOKEN, eventCallback: onPaddleEvent }); paddleReady = true; } catch (e) {}
-    }
-    // Paddle.js event -> funnel step. Names only; never the customer's email
-    // or payment details. `purchase_completed` here is the client-side signal,
-    // the source of truth for revenue stays in the Paddle dashboard.
-    var PADDLE_EVENTS = {
-      'checkout.loaded': 'checkout_loaded',
-      'checkout.customer.created': 'checkout_email_entered',
-      'checkout.payment.selected': 'checkout_payment_selected',
-      'checkout.payment.failed': 'payment_failed',
-      'checkout.error': 'checkout_error',
-      'checkout.closed': 'checkout_closed',
-      'checkout.completed': 'purchase_completed'
-    };
-    var currentPlan = null;
-    var currentPlacement = null;
-    // A checkout that fails to open must not dead-end the buyer: reveal the
-    // e-mail order right where they clicked.
-    function showOrderFallback() {
-      var els = document.querySelectorAll('.order-fallback');
-      for (var i = 0; i < els.length; i++) els[i].style.display = 'block';
-    }
-    function onPaddleEvent(ev) {
-      var name = ev && PADDLE_EVENTS[ev.name];
-      if (name === 'checkout_error') showOrderFallback();
-      if (!name || !window.track) return;
-      var d = ev.data || {};
-      window.track(name, {
-        plan: currentPlan,
-        placement: currentPlacement,
-        transaction_id: d.transaction_id || d.id || null,
-        currency: d.currency_code || null,
-        country: d.customer && d.customer.address ? d.customer.address.country_code : null,
-        error_code: (ev.error && ev.error.code) || ev.code || null,
-        error: ev.error ? String(ev.error.detail || ev.error.code || ev.error) : (ev.detail || null)
-      });
-    }
-    // When Paddle is actually up, the page must stop telling people that
-    // checkout is not ready yet — that line costs sales the moment it is wrong.
-    document.addEventListener('DOMContentLoaded', function () {
-      if (!paddleReady) return;
-      var notes = document.querySelectorAll('.checkout-note');
-      for (var i = 0; i < notes.length; i++) notes[i].innerHTML = 'Secure checkout by Paddle · 14-day money-back guarantee · license key by email';
-    });
-    function buyPro(plan, placement) {
-      currentPlan = plan;
-      currentPlacement = placement || null;
-      if (window.track) window.track('checkout_clicked', { plan: plan, placement: currentPlacement, paddle_ready: paddleReady });
-      if (paddleReady) {
-        Paddle.Checkout.open({ items: [{ priceId: PRICES[plan], quantity: 1 }] });
-      } else {
-        showOrderFallback();
-      }
-      return false;
-    }
-  </script>
+  <script src="/assets/checkout.js" defer></script>
   <script src="/assets/analytics.js" defer></script>
 </head>
 <body>
@@ -97,6 +37,19 @@
 </header>
 
 <main>
+
+  <section id="purchase-result" hidden aria-live="polite">
+    <div class="wrap center">
+      <h2>Your Pro license</h2>
+      <p id="purchase-message"></p>
+      <div id="license-key-box" hidden>
+        <label for="purchase-key">License key</label>
+        <input id="purchase-key" readonly style="width:100%;max-width:520px;padding:12px;font-family:monospace" aria-label="Your Pro license key">
+        <button class="btn btn-primary" onclick="copyLicense()">Copy license key</button>
+      </div>
+      <button id="retry-license" class="btn btn-secondary" hidden onclick="claimLicense()">Retry confirmation</button>
+    </div>
+  </section>
 
   <div class="hero">
     <div class="wrap">
@@ -192,7 +145,7 @@
       <div class="faq" style="max-width: 760px; margin: 0 auto;">
         <details>
           <summary>How does the license key work?</summary>
-          <p>After purchase you receive a license key (format <code class="key">FPTX-…</code>) by email. One key unlocks unlimited exports on your Figma account. There is no separate account, password or dashboard — the key is the whole license.</p>
+          <p>After payment is confirmed, your license key appears on this page. Save it and paste it into the plugin to unlock unlimited exports. Pro checks your license online; your designs stay inside Figma. There is no separate account or password.</p>
         </details>
         <details>
           <summary>How do I activate Pro in the plugin?</summary>
@@ -204,7 +157,7 @@
         </details>
         <details>
           <summary>Can I get a refund?</summary>
-          <p>Yes — if Pro doesn't work out, tell us within <strong>14 days</strong> of purchase and we'll refund you in full. Once checkout is live, refunds are handled through Paddle (our Merchant of Record); until then, email <strong>ttrttr449@gmail.com</strong>. See the <a href="./refunds.html">Refund Policy</a>.</p>
+          <p>Yes — if Pro doesn't work out, tell us within <strong>14 days</strong> of purchase and we'll refund you in full. Refunds are handled through Paddle (our Merchant of Record). For help, email <strong>ttrttr449@gmail.com</strong>. See the <a href="./refunds.html">Refund Policy</a>.</p>
         </details>
         <details>
           <summary>Do I need Pro to try the plugin?</summary>
