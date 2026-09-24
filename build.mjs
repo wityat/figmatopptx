@@ -4,16 +4,26 @@
 //
 //   node build.mjs
 //
-// The hand-written pages (index.html, pro.html, legal) are NOT generated —
-// they are edited directly. Keep their header/footer links in sync with
+// The hand-written pages (index.html, pro.html, legal) are edited directly;
+// only pro.html's checkout asset version is updated here. Keep their links in sync with
 // content/_shared.mjs.
 
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { page, SITE } from './content/_shared.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
+
+// GitHub Pages caches scripts for ten minutes. A changed Paddle account must
+// have a new asset URL so returning visitors cannot reuse its old configuration.
+const checkout = (await readFile(join(ROOT, 'assets/checkout.js'), 'utf8')).replace(/\r\n/g, '\n');
+const checkoutVersion = createHash('sha256').update(checkout).digest('hex').slice(0, 12);
+const proPath = join(ROOT, 'pro.html');
+const pro = await readFile(proPath, 'utf8');
+const versionedPro = pro.replace(/src="\/assets\/checkout\.js(?:\?[^"\s]*)?"/, `src="/assets/checkout.js?v=${checkoutVersion}"`);
+if (versionedPro !== pro) await writeFile(proPath, versionedPro, 'utf8');
 
 const MODULES = [
   './content/figma-to-pptx.mjs',
